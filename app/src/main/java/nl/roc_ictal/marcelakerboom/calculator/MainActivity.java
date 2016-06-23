@@ -6,18 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.math.BigDecimal;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private String entry;
-    private boolean hasDot;
-    private boolean isResult;
-
-    private String memoryEntry;
-
-    private String operator;
-    private String operatorEntry;
+    private Calculator calculator;
 
     private EditText txtScreen;
 
@@ -36,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnEight;
     private Button btnNine;
     private Button btnZero;
+    private Button btnDot;
 
     private Button btnAdd;
     private Button btnSubtract;
@@ -47,156 +39,74 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnClear:
-                this.clear();
+                calculator.clear();
                 break;
             case R.id.btnMemoryAdd:
-                this.memoryAdd();
+                calculator.memoryAdd();
                 break;
             case R.id.btnMemoryClear:
-                this.memoryClear();
+                calculator.memoryClear();
                 break;
             case R.id.btnClearEntry:
-                this.clearEntry();
+                calculator.clearEntry();
                 break;
             case R.id.btnOne:
-                this.digit(1);
+                calculator.append(1);
                 break;
             case R.id.btnTwo:
-                this.digit(2);
+                calculator.append(2);
                 break;
             case R.id.btnThree:
-                this.digit(3);
+                calculator.append(3);
                 break;
             case R.id.btnFour:
-                this.digit(4);
+                calculator.append(4);
                 break;
             case R.id.btnFive:
-                this.digit(5);
+                calculator.append(5);
                 break;
             case R.id.btnSix:
-                this.digit(6);
+                calculator.append(6);
                 break;
             case R.id.btnSeven:
-                this.digit(7);
+                calculator.append(7);
                 break;
             case R.id.btnEight:
-                this.digit(8);
+                calculator.append(8);
                 break;
             case R.id.btnNine:
-                this.digit(9);
+                calculator.append(9);
                 break;
             case R.id.btnZero:
-                this.digit(0);
+                calculator.append(0);
                 break;
             case R.id.btnDot:
-                this.dot();
+                calculator.appendDot();
                 break;
             case R.id.btnAdd:
-                this.operation("+");
+                calculator.operate(Calculator.Operator.ADD);
                 break;
             case R.id.btnSubtract:
-                this.operation("-");
+                calculator.operate(Calculator.Operator.SUBTRACT);
                 break;
             case R.id.btnMultiply:
-                this.operation("*");
+                calculator.operate(Calculator.Operator.MULTIPLY);
                 break;
             case R.id.btnDivide:
-                this.operation("/");
+                calculator.operate(Calculator.Operator.DIVIDE);
                 break;
             case R.id.btnEqual:
-                this.evaluate();
+                calculator.evaluate();
                 break;
         }
+        this.display();
     }
 
-    protected void operation(String operator) {
-        this.operator = operator;
-        this.operatorEntry = this.entry;
-        this.clearEntry();
-    }
-
-    protected void memoryAdd() {
-        BigDecimal memoryEntry = new BigDecimal(this.memoryEntry);
-        BigDecimal entry = new BigDecimal(this.entry);
-        memoryEntry = memoryEntry.add(entry);
-        this.memoryEntry = memoryEntry.toString();
-        this.setEntry(this.memoryEntry);
-    }
-
-    protected void memoryClear() {
-        this.memoryEntry = "0";
-    }
-
-    protected void evaluate() {
-        BigDecimal result = new BigDecimal(this.entry);
-
-        if(this.operator != null) {
-            BigDecimal left = new BigDecimal(this.operatorEntry);
-
-            switch (this.operator) {
-                case "+":
-                    result = left.add(result);
-                    break;
-                case "-":
-                    result = left.subtract(result);
-                    break;
-                case "*":
-                    result = left.multiply(result);
-                    break;
-                case "/":
-                    result = left.divide(result);
-                    break;
-            }
-        }
-
-        this.setEntry(result.toString());
-        this.isResult = true;
-    }
-
-    protected void dot() {
-        if(this.hasDot) {
-            return;
-        }
-        this.pushEntry(".");
-        this.hasDot = true;
-    }
-
-    protected void digit(Integer digit) {
-        if(this.entry.equals("0")) {
-            this.setEntry("");
-        }
-        this.pushEntry(digit.toString());
-        this.show();
-    }
-
-    protected void clear() {
-        this.operator = null;
-        this.operatorEntry = null;
-        this.clearEntry();
-    }
-
-    protected void clearEntry() {
-        this.entry = "0";
-        this.hasDot = false;
-        this.isResult = false;
-        this.show();
-    }
-
-    protected void setEntry(String value) {
-        this.entry = value;
-        this.show();
-    }
-
-    protected void pushEntry(String value) {
-        if(this.isResult) {
-            this.entry = "";
-        }
-        this.setEntry(this.entry + value);
-        this.isResult = false;
-    }
-
-    protected void show() {
-        this.txtScreen.setText(this.entry);
+    /**
+     * Displays the entry to the screen
+     */
+    protected void display() {
+        txtScreen.setText(calculator.getEntry());;
     }
 
     @Override
@@ -205,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         txtScreen = (EditText) findViewById(R.id.txtScreen);
+
         btnClear = (Button) findViewById(R.id.btnClear);
         btnClearEntry = (Button) findViewById(R.id.btnClearEntry);
 
@@ -221,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnEight = (Button) findViewById(R.id.btnEight);
         btnNine = (Button) findViewById(R.id.btnNine);
         btnZero = (Button) findViewById(R.id.btnZero);
+        btnDot = (Button) findViewById(R.id.btnDot);
 
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnSubtract = (Button) findViewById(R.id.btnSubtract);
@@ -228,8 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnDivide = (Button) findViewById(R.id.btnDivide);
         btnEqual = (Button) findViewById(R.id.btnEqual);
 
-        this.clear();
-        this.memoryClear();
+        calculator = new Calculator();
 
         this.btnClear.setOnClickListener(this);
         this.btnClearEntry.setOnClickListener(this);
@@ -247,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.btnEight.setOnClickListener(this);
         this.btnNine.setOnClickListener(this);
         this.btnZero.setOnClickListener(this);
+        this.btnDot.setOnClickListener(this);
 
         this.btnAdd.setOnClickListener(this);
         this.btnSubtract.setOnClickListener(this);
