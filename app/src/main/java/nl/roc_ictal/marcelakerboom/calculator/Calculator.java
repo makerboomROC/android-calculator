@@ -124,7 +124,7 @@ public class Calculator {
                     result = operand.multiply(augment);
                     break;
                 case DIVIDE:
-                    result = operand.divide(augment, BigDecimal.ROUND_HALF_EVEN);
+                    result = operand.divide(augment, 9, BigDecimal.ROUND_HALF_UP);
                     break;
                 default:
                     result = augment;
@@ -137,7 +137,7 @@ public class Calculator {
         }
 
         // Sla het antwoord op als uitvoer
-        this.setEntry(result.toString(), true);
+        this.setEntry(result.stripTrailingZeros().toPlainString(), true);
     }
 
     /**
