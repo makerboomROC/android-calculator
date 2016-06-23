@@ -56,7 +56,7 @@ public class Calculator {
         String entry = this.entry;
 
         // Als de calculator nu een uitvoer bevat, moeten we de inhoud legen.
-        if (this.isResult) {
+        if (this.isResult || entry.equals("0")) {
             entry = "";
         }
 
