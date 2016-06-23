@@ -10,13 +10,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Calculator calculator;
 
+    // Dit is de display van de calculator
     private EditText txtScreen;
 
+    // De C-knop reset de hele rekenmachine
     private Button btnClear;
+    // De CE-knop reset het scherm/de input
     private Button btnClearEntry;
     private Button btnMemoryAdd;
     private Button btnMemoryClear;
 
+    // Alle cijferknoppen
     private Button btnOne;
     private Button btnTwo;
     private Button btnThree;
@@ -29,14 +33,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnZero;
     private Button btnDot;
 
+    // De knoppen voor de operaties
     private Button btnAdd;
     private Button btnSubtract;
     private Button btnMultiply;
     private Button btnDivide;
     private Button btnEqual;
 
+    /**
+     * Dit is de implementatie van View.OnClickListener in onze applicatie.
+     * Hier wordt gekeken dmv de resource-id van de knop naar op elke knop er gedrukt is,
+     * en afhangend van welke knop, roepen we functies aan op de Calculator.
+     *
+     * Als laatst vernieuwen we de waarde in het display met de waarden uit de Calculator.
+     * @param view
+     */
     @Override
     public void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.btnClear:
                 calculator.clear();
@@ -103,10 +117,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * Displays the entry to the screen
+     * Toont de inhoud van de Calculator op het scherm.
      */
     protected void display() {
-        txtScreen.setText(calculator.getEntry());;
+        txtScreen.setText(calculator.getEntry());
     }
 
     @Override
@@ -165,5 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.btnMultiply.setOnClickListener(this);
         this.btnDivide.setOnClickListener(this);
         this.btnEqual.setOnClickListener(this);
+
+        this.display();
     }
 }
