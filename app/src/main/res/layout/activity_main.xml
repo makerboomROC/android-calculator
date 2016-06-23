@@ -18,11 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtScreen"
-            android:layout_gravity="center_horizontal"
             android:textSize="20dip"
             android:editable="false"
             android:background="#000"
-            android:textAlignment="textEnd"
             android:paddingTop="10dip"
             android:paddingBottom="10dip"
             android:textColor="#fff" />
