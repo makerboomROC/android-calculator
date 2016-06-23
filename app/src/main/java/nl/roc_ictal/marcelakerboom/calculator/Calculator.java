@@ -124,7 +124,7 @@ public class Calculator {
                     result = operand.multiply(augment);
                     break;
                 case DIVIDE:
-                    result = operand.divide(augment);
+                    result = operand.divide(augment, BigDecimal.ROUND_HALF_EVEN);
                     break;
                 default:
                     result = augment;
